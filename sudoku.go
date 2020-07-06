@@ -68,6 +68,24 @@ func (s Sudoku9x9) Judge() bool {
 	return true
 }
 
+// Solvable checks whether the table can be solved
+func (s Sudoku9x9) Solvable() bool {
+	rows, cols, blocks := [9][9]bool{}, [9][9]bool{}, [9][9]bool{}
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			x := s.Table[i][j] - 1
+			if x < 0 {
+				continue
+			}
+			if rows[i][x] || cols[j][x] || blocks[(i/3)*3+j/3][x] {
+				return false
+			}
+			rows[i][x], cols[j][x], blocks[(i/3)*3+j/3][x] = true, true, true
+		}
+	}
+	return true
+}
+
 // Print 9x9 table
 func (s Sudoku9x9) Print() {
 	for i := range s.Table {
